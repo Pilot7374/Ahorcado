@@ -1,5 +1,6 @@
 import random
 
+
 def cargar_palabras(ruta):
     '''
     Recibe la ruta de un fichero de texto que contiene una palabra por línea y devuelve
@@ -11,17 +12,20 @@ def cargar_palabras(ruta):
             res.append(linea.strip()) # strip() elimina los espacios en blanco y saltos de línea al principio y al final
         return res
 
+
 def elegir_palabra(palabras):
     '''
     Elige la palabra a adivinar:
-    - Selecciona una palabra aleatoria de la lista 'palabras'
-    - Devuelve la palabra seleccionada
+    - Selecciona una palabra aleatoria de la lista 'palabras'''
+
+    '''- Devuelve la palabra seleccionada
     Ayuda: 
     - La función 'random.choice' del paquete 'random' recibe una lista de opciones y 
       devuelve una de ellas seleccionada aleatoriamente.
     '''
     return random.choice(palabras)
-    
+
+
 def enmascarar_palabra(palabra, letras_probadas):
     '''
     Enmascarar la palabra:
@@ -33,17 +37,16 @@ def enmascarar_palabra(palabra, letras_probadas):
     - Utilice el método join de las cadenas. Observe el siguiente ejemplo:
         ' '.join(['a','b','c']) # Devuelve "a b c"
     '''
-    lista_caracteres = [] # Inicializar una lista vacía
-    for letra in palabra: # Recorrer cada letra de la palabra
-        # Si la letra está en la lista letras_probadas
-        if letra in letras_probadas:                   # ESCRIBIR CONDICIÓN
-            # Añadir a lista_caracteres la letra
-            lista_caracteres.append(letra)       # COMPLETAR
+    lista_caracteres = []
+    for letra in palabra:
+        if letra in letras_probadas:
+            lista_caracteres.append(letra)
         else:
-            # Añadir a lista_caracteres un guión bajo '_'
-            lista_caracteres.append('_')       # COMPLETAR
-    
-    return ' '.join(lista_caracteres)
+            lista_caracteres.append("_")
+
+    return " ".join(lista_caracteres)
+
+
 
 def pedir_letra(letras_probadas):
     '''
@@ -56,10 +59,12 @@ def pedir_letra(letras_probadas):
     - La función 'input' permite leer una cadena de texto desde la entrada estándar
     - El método 'lower' aplicado a una cadena devuelve una copia de la cadena en minúsculas
     '''
-    letra = input("Di una letra:").lower()
+    letra =  input("escribe una letra:").lower()
     while letra in letras_probadas:
-        letra = input("Esa ya la dijiste, di otra letra:").lower()
+        letra = input("Di otra letra:").lower()
     return letra
+    
+
 
 def comprobar_letra(palabra_secreta, letra):
     '''
@@ -69,8 +74,45 @@ def comprobar_letra(palabra_secreta, letra):
     - Devolver True si estaba y False si no
     '''
     if letra in palabra_secreta:
-        print("¡Letra correcta!")
+        print("Acertaste") 
         return True
     else:
-        print("Esa letra no es correcta :-(")
-        return False
+        print("Fallaste")
+        return False  
+    
+
+
+def comprobar_palabra_completa(palabra_secreta, letras_probadas):
+    '''
+    Comprobar si se ha completado la palabra:
+    - Comprobar si todas las letras de la palabra secreta han sido propuestas por el usuario
+    - Devolver True si es así o False si falta alguna letra por adivinar
+    '''
+    for letra in letras_probadas:
+        if letra not in letras_probadas:
+            return False
+        
+    return True
+
+
+
+
+
+def ejecutar_turno(palabra_secreta, letras_probadas):
+    '''
+    Ejecutar un turno de juego:
+    - Mostrar la palabra enmascarada
+    - Pedir la nueva letra
+    - Comprobar si la letra está en la palabra (acierto) o no (fallo)
+    - Añadir la letra al conjunto de letras probadas
+    - Devolver True si la letra fue un acierto, False si fue un fallo
+    Ayuda:
+    - Recuerda las funciones que ya has implementado para mostrar la palabra, pedir la letra y comprobarla
+    '''
+    
+    palabra_enmascarada = enmascarar_palabra(palabra_secreta, letras_probadas)
+    print("La palabra a adivinar es", palabra_enmascarada)
+    letra = pedir_letra(letras_probadas)
+    res =comprobar_letra(palabra_secreta, letra)
+    letras_probadas.add(letra)
+    return res
